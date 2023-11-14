@@ -1,0 +1,22 @@
+<!-- movies-list.component.html -->
+
+<div class="movies-container">
+  <div *ngFor="let movie of movies" class="movie-card">
+    <!-- movies-list.component.html -->
+
+    <img [src]="movie.poster" alt="{{ movie.title }}" class="movie-poster">
+
+    <div class="movie-details">
+      <h3 class="movie-title">{{ movie.title }}</h3>
+      <p class="movie-year">{{ movie.year }}</p>
+      <!-- Agrega más detalles si es necesario -->
+    </div>
+  </div>
+</div>
+
+
+<div class="pagination">
+  <button (click)="changePage('left')" [disabled]="currentPage === 1">Anterior</button>
+  <span>Página {{ currentPage }}</span>
+  <button (click)="changePage('right')" [disabled]="currentPage === totalPages">Siguiente</button>
+</div>
