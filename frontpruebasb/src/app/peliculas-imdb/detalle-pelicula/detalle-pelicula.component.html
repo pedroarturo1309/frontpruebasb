@@ -1,0 +1,22 @@
+@if (movie) {
+<div class="movie-detail-container">
+  <img [src]="movie.poster" alt="{{ movie.title }}" class="movie-poster">
+  <div class="movie-details">
+    <h2>{{ movie.title }} ({{ movie.year }})</h2>
+    <p><strong>Rated:</strong> {{ movie.rated }}</p>
+    <p><strong>Released:</strong> {{ movie.released }}</p>
+
+    <h3>Plot</h3>
+    <p>{{ movie.plot }}</p>
+
+    <h3>Ratings</h3>
+    <ul>
+      @for(rating of movie.ratings; track rating.source) {
+        <li>{{ rating.source }}: {{ rating.value }}</li>
+      }
+    </ul>
+  </div>
+</div>
+
+
+}
