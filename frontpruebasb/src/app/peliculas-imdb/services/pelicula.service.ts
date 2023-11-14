@@ -14,4 +14,9 @@ export class PeliculaService {
     const endpoint = '/buscar-nombre';
     return this.http.get<any>(`${this.apiUrl}${endpoint}?nombre=${nombre}&pagina=${pagina}`);
   }
+
+  buscarDetalle(codigo: string): Observable<any> {
+    const endpoint = '/buscar-codigo';
+    return this.http.get<any>(`${this.apiUrl}${endpoint}?codigo=${codigo}`);
+  }
 }
