@@ -1,10 +1,16 @@
 <!-- movies-list.component.html -->
-
+<h1>Listado de peliculas</h1>
+<div class="col-md-3">
+  <label>Buscar por nombre</label>
+  <input type="text" class="form-control"  [(ngModel)]="nombrePelicula"
+    (keyup.enter)="buscar()" />
+</div>
+<hr/>
 <div class="movies-container">
   <div *ngFor="let movie of movies" class="movie-card">
     <!-- movies-list.component.html -->
 
-    <img [src]="movie.poster" alt="{{ movie.title }}" class="movie-poster">
+    <img width="300" height="450" [src]="movie.poster" alt="{{ movie.title }}" class="movie-poster" onerror="this.onerror=null; this.src='https://www.ecreativeim.com/blog/wp-content/uploads/2011/05/image-not-found.jpg'">
 
     <div class="movie-details">
       <h3 class="movie-title">{{ movie.title }}</h3>

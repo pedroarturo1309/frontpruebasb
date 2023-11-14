@@ -20,8 +20,8 @@
 }
 
 .movie-poster {
-  width: 100%;
-  height: auto;
+  width: 300px;
+  height: 450px;
   border-bottom: 1px solid #ddd;
 }
 
@@ -32,7 +32,12 @@
 .movie-title {
   font-size: 18px;
   margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px; /* ajusta este valor según tus necesidades */
 }
+
 
 .movie-year {
   font-size: 14px;

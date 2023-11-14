@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PeliculaService } from '../services/pelicula.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-listar-peliculas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './listar-peliculas.component.html',
   styleUrl: './listar-peliculas.component.scss'
 })
 export class ListarPeliculasComponent implements OnInit {
   movies: any = [];
   totalPages: number = 1;
+  nombrePelicula = 'hulk';
   constructor(private service: PeliculaService) {
 
   }
@@ -20,7 +22,7 @@ export class ListarPeliculasComponent implements OnInit {
   }
 
   buscar() {
-    this.service.buscar('hulk', this.currentPage).subscribe(res => {
+    this.service.buscar(this.nombrePelicula, this.currentPage).subscribe(res => {
       console.log(res)
       if (res.success) {
         this.movies = res.data.search;
