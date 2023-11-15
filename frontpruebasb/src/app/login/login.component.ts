@@ -16,15 +16,31 @@ export class LoginComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute) {
     let token = activatedRoute.snapshot.queryParamMap.get('authResult');
+    let usuario = activatedRoute.snapshot.queryParamMap.get('usuario');
 
     if (token)
       localStorage.setItem('token', token);
 
+    if (usuario) {
+      this.serivce.usuario.set(usuario);
+      localStorage.setItem('usuario', usuario);
+    }
+
     if (localStorage.getItem('token'))
       router.navigateByUrl('/listar-peliculas');
+
+    if (localStorage.getItem('usuario'))
+      this.serivce.usuario.set(localStorage.getItem('usuario') ?? '');
+
+
+
   }
 
   google() {
-    this.serivce.iniciarConGoogle().subscribe(console.log);
+    this.serivce.iniciarConGoogle()
+  }
+
+  microsoft() {
+    this.serivce.iniciarConMicrosoft()
   }
 }

@@ -8,5 +8,6 @@ export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'listar-peliculas', component: ListarPeliculasComponent, canActivate: [authGuard] },
+  { path: 'detalle-pelicula', component: DetallePeliculaComponent },
   { path: 'detalle-pelicula/:codigo', component: DetallePeliculaComponent }
 ];

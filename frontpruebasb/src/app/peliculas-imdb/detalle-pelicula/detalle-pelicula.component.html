@@ -12,11 +12,46 @@
     <h3>Ratings</h3>
     <ul>
       @for(rating of movie.ratings; track rating.source) {
-        <li>{{ rating.source }}: {{ rating.value }}</li>
+      <li>{{ rating.source }}: {{ rating.value }}</li>
+      } @empty {
+      <li>No data...</li>
       }
     </ul>
   </div>
 </div>
 
+<hr />
+<h1>Comentarios de la aplicacion</h1>
+<div class="col-md-3">
+  <input type="text" class="form-control" />
+  <button type="button" class="btn btn-primary"></button>
+</div>
+<div class="col-md-12">
+
+  <table class="table">
+    <thead>
+      <th>Fecha</th>
+      <th>Usuario</th>
+      <th>Comentario</th>
+      <th></th>
+    </thead>
+    <tbody>
+      @for(item of comentarios; track item.id) {
+      <tr>
+        <td>{{item.fechaCreacion | date: 'dd-MM-yyyy hh:mm'}} </td>
+        <td>{{item.nombreUsuario}}</td>
+        <td>{{item.comentario}}</td>
+        <td>
+          @if(item.puedeEditar) {
+          <input type="text" class="form-control" />
+          <button type="button" class="btn btn-primary">Actualizar</button>
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+
+</div>
 
 }
