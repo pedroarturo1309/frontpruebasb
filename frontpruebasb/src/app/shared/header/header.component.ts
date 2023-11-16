@@ -17,6 +17,11 @@ export class HeaderComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    if (!localStorage.getItem('token'))
+      this.router.navigateByUrl('/login');
+
+    if (localStorage.getItem('usuario'))
+      this.service.usuario.set(localStorage.getItem('usuario') ?? '');
 
   }
 

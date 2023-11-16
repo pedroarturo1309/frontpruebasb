@@ -5,11 +5,11 @@ export const jwtInterceptor: HttpInterceptorFn = (request, next) => {
   if (token) {
 
     request = request.clone({
-        setHeaders: {
-            Authorization: `${token}`,
-        }
+      setHeaders: {
+        Authorization: `${token}`,
+      }
     });
-}
+  }
   return next(request);
 };
 

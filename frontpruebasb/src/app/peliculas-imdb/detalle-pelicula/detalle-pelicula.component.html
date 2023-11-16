@@ -23,8 +23,8 @@
 <hr />
 <h1>Comentarios de la aplicacion</h1>
 <div class="col-md-3">
-  <input type="text" class="form-control" />
-  <button type="button" class="btn btn-primary"></button>
+  <input [(ngModel)]="nuevoComentario" type="text" class="form-control" />
+  <button (click)="agregarComentario()" type="button" class="btn btn-primary">Agregar comentario</button>
 </div>
 <div class="col-md-12">
 
@@ -36,15 +36,20 @@
       <th></th>
     </thead>
     <tbody>
-      @for(item of comentarios; track item.id) {
+      @for(item of comentarios; track item.id; let idx = $index) {
       <tr>
-        <td>{{item.fechaCreacion | date: 'dd-MM-yyyy hh:mm'}} </td>
+        <td>{{item.fechaCreacion | date: 'dd-MM-yyyy hh:mm:ss'}} </td>
         <td>{{item.nombreUsuario}}</td>
         <td>{{item.comentario}}</td>
         <td>
           @if(item.puedeEditar) {
-          <input type="text" class="form-control" />
-          <button type="button" class="btn btn-primary">Actualizar</button>
+          <i style="color: blue;" class="bi bi-pencil-square" (click)="iniciarEdicion(idx)"></i>
+          <i style="color: red;" class="bi bi-trash3" (click)="eliminarComentario(idx)"></i>
+
+          @if(comentarioEditadoIndex >= 0) {
+            <input [(ngModel)]="comentarioEditado" type="text" class="form-control" />
+            <button (click)="guardarEdicion(item.id)" type="button" class="btn btn-primary">Actualizar</button>
+          }
           }
         </td>
       </tr>
@@ -53,5 +58,4 @@
   </table>
 
 </div>
-
 }

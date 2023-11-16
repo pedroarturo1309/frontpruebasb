@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { PeliculaService } from '../services/pelicula.service';
 import { BehaviorSubject } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-detalle-pelicula',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, FormsModule],
   templateUrl: './detalle-pelicula.component.html',
   styleUrl: './detalle-pelicula.component.scss'
 })
@@ -19,20 +20,20 @@ export class DetallePeliculaComponent implements OnInit {
   nuevoComentario = '';
   comentarioEditado = '';
   comentarioEditadoIndex = -1;
+  codigoPelicula: string | null = null;
   constructor(private activatedRoute: ActivatedRoute,
     private service: PeliculaService) {
 
   }
   ngOnInit(): void {
-    let codigo = this.activatedRoute.snapshot.paramMap.get('codigo');
-    console.log(codigo);
-    this.buscarDetalle(codigo);
-    this.buscarComentarios(codigo);
+    this.codigoPelicula = this.activatedRoute.snapshot.paramMap.get('codigo');
+    this.buscarDetalle();
+    this.buscarComentarios();
   }
 
-  buscarDetalle(codigo: string | null) {
-    if (codigo) {
-      this.service.buscarDetalle(codigo).subscribe(res => {
+  buscarDetalle() {
+    if (this.codigoPelicula) {
+      this.service.buscarDetalle(this.codigoPelicula).subscribe(res => {
         if (res.success) {
           this.movie = res.data;
         }
@@ -40,12 +41,11 @@ export class DetallePeliculaComponent implements OnInit {
     }
   }
 
-  buscarComentarios(codigo: string | null) {
-    if (codigo) {
-      this.service.buscarComentarios(codigo).subscribe(res => {
+  buscarComentarios() {
+    if (this.codigoPelicula) {
+      this.service.buscarComentarios(this.codigoPelicula).subscribe(res => {
         if (res.success) {
           this.comentarios = res.data;
-          this.comentariosSubject.next(res.data);
         }
       });
     }
@@ -53,16 +53,16 @@ export class DetallePeliculaComponent implements OnInit {
 
   agregarComentario(): void {
     if (this.nuevoComentario.trim() !== '') {
-      const comentarios = this.comentariosSubject.value;
-      comentarios.push(this.nuevoComentario);
-      this.comentariosSubject.next(comentarios);
+      this.service.agregarComentarios(this.movie.imdbID, this.nuevoComentario).subscribe(res => {
+        this.buscarComentarios();
+      });
       this.nuevoComentario = '';
     }
   }
 
   iniciarEdicion(index: number): void {
     this.comentarioEditadoIndex = index;
-    this.comentarioEditado = this.comentarios[index];
+    this.comentarioEditado = this.comentarios[index].comentario;
   }
 
   cancelarEdicion(): void {
@@ -70,21 +70,25 @@ export class DetallePeliculaComponent implements OnInit {
     this.comentarioEditado = '';
   }
 
-  guardarEdicion(): void {
+  guardarEdicion(id: string): void {
     if (this.comentarioEditado.trim() !== '') {
       // this.service.editarComentario(this.comentarioEditadoIndex, this.comentarioEditado);
 
-      const comentarios = this.comentariosSubject.value;
-      comentarios[this.comentarioEditadoIndex] = this.comentarioEditado;
-      this.comentariosSubject.next(comentarios);
+      this.comentarios[this.comentarioEditadoIndex].comentario = this.comentarioEditado;
+      // this.comentariosSubject.next(comentarios);
+
+      this.service.editarComentarios(id, this.comentarioEditado).subscribe(res => {
+        this.buscarComentarios();
+      });
       this.cancelarEdicion();
     }
   }
 
   eliminarComentario(index: number): void {
-    const comentarios = this.comentariosSubject.value;
-    comentarios.splice(index, 1);
-    this.comentariosSubject.next(comentarios);
+    const id = this.comentarios[index].id;
+    this.comentarios.splice(index, 1);
+    this.service.eliminarComentarios(id).subscribe();
+    // this.comentarios.next(comentarios);
     // this.service.eliminarComentario(index);
   }
 }

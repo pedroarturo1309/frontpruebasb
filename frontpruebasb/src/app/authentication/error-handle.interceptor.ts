@@ -6,7 +6,8 @@ export const errorHandleInterceptor: HttpInterceptorFn = (req, next) => {
     if (err.status === 401 || err.status === 0) {
         // auto logout if 401 response returned from api
         localStorage.clear();
-        // window.location.reload();
+        window.location.pathname = 'login';
+
     }
      throw err;
   }))
